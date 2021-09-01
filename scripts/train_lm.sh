@@ -1,0 +1,21 @@
+#! /bin/bash 
+PYTHONPATH=. python scripts/train_lm.py \
+--model_type roberta \
+--train_folder $DATA_FOLDER \
+--do_train \
+--output_dir $DATA_OUTPUT \
+--config_overrides vocab_size=52000,max_position_embeddings=514,num_hidden_layers=24,intermediate_size=4096,hidden_size=1024,num_attention_heads=16 \
+--custom_tokenizer_path danish_tokenizer/ \
+--max_len 512 \
+--save_strategy steps \
+--save_steps 50000 \
+--no_cuda \
+--seed 42 \
+--dataloader_num_workers 16 \
+--logging_strategy steps \
+--logging_steps 10 \
+--per_device_train_batch_size 8000 \
+--overwrite_output_dir \
+--max_steps 500000 \
+--learning_rate 4e-4 \
+--warmup_steps 30000 \
