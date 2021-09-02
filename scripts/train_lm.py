@@ -360,10 +360,9 @@ def main():
         
         tokenizer = RobertaTokenizerFast.from_pretrained(model_args.custom_tokenizer_path, max_len=model_args.max_len)
         tokenizer._tokenizer.post_processor = BertProcessing(
-        ("</s>", tokenizer.token_to_id("</s>")),
-        ("<s>", tokenizer.token_to_id("<s>")),
+        ("</s>", tokenizer.encode("</s>", add_special_tokens=False)[0]),
+        ("<s>", tokenizer.encode("<s>", add_special_tokens=False)[0]),
     )
-        tokenizer.enable_truncation(max_length=512)
     
     else:
         raise ValueError(
