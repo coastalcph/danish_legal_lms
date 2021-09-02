@@ -363,7 +363,7 @@ def main():
         ("</s>", tokenizer.token_to_id("</s>")),
         ("<s>", tokenizer.token_to_id("<s>")),
     )
-    tokenizer.enable_truncation(max_length=512)
+        tokenizer.enable_truncation(max_length=512)
     
     else:
         raise ValueError(
