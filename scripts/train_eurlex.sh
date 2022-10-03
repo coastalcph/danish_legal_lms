@@ -13,7 +13,7 @@ python src/train_eurlex.py \
     --do_eval \
     --do_predict \
     --concept_level ${CONCEPT_LEVEL} \
-    --output_dir data/${MODEL_PATH}/eurlex/{CONCEPT_LEVEL} \
+    --output_dir data/${MODEL_PATH}/eurlex/${CONCEPT_LEVEL} \
     --overwrite_output_dir \
     --logging_steps 100 \
     --evaluation_strategy epoch \
