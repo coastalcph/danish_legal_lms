@@ -32,6 +32,6 @@ for size in [128, 512]:
                     ws_tokens = line.split(' ')
                     prev_idx = 0
                     for idx in range(max_sw_seq_length, len(ws_tokens) + max_sw_seq_length, max_sw_seq_length):
-                        file.write(json.dumps({'text': ' '.join(ws_tokens[prev_idx:idx])}))
+                        file.write(json.dumps({'text': ' '.join(ws_tokens[prev_idx:idx]) + '\n'}))
                         prev_idx = idx
 
