@@ -1,8 +1,8 @@
-export WANDB_PROJECT="lex-lm"
+export WANDB_PROJECT="danish-lex-lm"
 export XRT_TPU_CONFIG="localservice;0;localhost:51011"
 export PYTHONPATH=.
 
-MODEL_MAX_LENGTH=128
+MODEL_MAX_LENGTH=512
 MODEL_PATH='plms/danish-legal-lm-base'
 BATCH_SIZE=16
 ACCUMULATION_STEPS=2

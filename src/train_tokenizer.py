@@ -69,5 +69,6 @@ def main(vocab_size=32000):
         print(tokenizer.tokenize(example['text'][:500]))
         print('-' * 150)
 
+
 if __name__ == "__main__":
     main()

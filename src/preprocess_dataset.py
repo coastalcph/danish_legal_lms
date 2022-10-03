@@ -8,6 +8,9 @@ from data import DATA_DIR
 
 CUSTOM_DATA_FOLDER = os.path.join(DATA_DIR, 'danish_legal_pile')
 
+if not os.path.exists(CUSTOM_DATA_FOLDER):
+    os.mkdir(CUSTOM_DATA_FOLDER)
+
 # MERGE DANISH LEGAL AND EU CORPORA
 danish_dataset = load_dataset('DDSC/partial-danish-gigaword-no-twitter', split='train')
 danish_eurlex_dataset = load_dataset('multi_eurlex', 'da', split='train')
