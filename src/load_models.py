@@ -7,7 +7,8 @@ for model_name in ['Maltehb/danish-bert-botxo', 'Maltehb/aelaectra-danish-electr
     model = AutoModel.from_pretrained(model_name, use_auth_token=AUTH_KEY)
     model_total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     model_total_params = model_total_params / 1e6
-    results += f'Model "{model_name:>30} has {model_total_params:.1f}M number of parameters, ' \
+    model_name = "\'" + model_name + "\'"
+    results += f'Model {model_name:>50} has {model_total_params:.1f}M number of parameters, ' \
                f'{model.config.vocab_size} vocabulary size, ' \
                f'{model.config.num_hidden_layers} layers, ' \
                f'{model.config.hidden_size} hidden units, and ' \
