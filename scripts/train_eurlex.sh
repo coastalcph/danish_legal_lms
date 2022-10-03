@@ -26,4 +26,7 @@ python src/train_eurlex.py \
     --lr_scheduler_type cosine \
     --warmup_ratio 0.05 \
     --max_seq_length ${MODEL_MAX_LENGTH} \
-    --pad_to_max_length
+    --pad_to_max_length \
+    --load_best_model_at_end \
+    --metric_for_best_model micro-f1 \
+    --greater_is_better True
