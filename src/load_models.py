@@ -16,3 +16,15 @@ for model_name in ['Maltehb/danish-bert-botxo', 'Maltehb/aelaectra-danish-electr
     results += '-' * 150 + '\n'
 
 print(results)
+
+#
+# Model                        'Maltehb/danish-bert-botxo' has 110.6M number of parameters, 32000 vocabulary size, 12 layers, 768 hidden units, and 12 attention heads.
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
+# Model   'Maltehb/aelaectra-danish-electra-small-uncased' has 13.7M number of parameters, 32000 vocabulary size, 12 layers, 256 hidden units, and 4 attention heads.
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
+# Model                  'coastalcph/danish-legal-lm-base' has 110.6M number of parameters, 32000 vocabulary size, 12 layers, 768 hidden units, and 12 attention heads.
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
+# Model                                 'xlm-roberta-base' has 278.0M number of parameters, 250002 vocabulary size, 12 layers, 768 hidden units, and 12 attention heads.
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
+#
+

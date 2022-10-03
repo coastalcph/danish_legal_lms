@@ -206,8 +206,8 @@ def main():
         predict_dataset = load_dataset("multi_eurlex", "da", split="test", label_level=data_args.concept_level,
                                        cache_dir=model_args.cache_dir, use_auth_token=AUTH_KEY)
     # Labels
-    label_list = list(range(train_dataset.features['labels'].num_classes))
-    labels_names = train_dataset.features['labels'].names
+    label_list = list(range(train_dataset.features['labels'].feature.num_classes))
+    labels_names = train_dataset.features['labels'].feature.names
     num_labels = len(label_list)
 
     # Load pretrained model and tokenizer

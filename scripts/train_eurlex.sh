@@ -1,5 +1,6 @@
 export WANDB_PROJECT="danish-lm"
 export PYTHONPATH=.
+export CUDA_VISIBLE_DEVICES=7
 
 MODEL_MAX_LENGTH=512
 MODEL_PATH='coastalcph/danish-legal-lm-base'
@@ -18,7 +19,7 @@ python src/train_eurlex.py \
     --evaluation_strategy epoch \
     --save_strategy epoch \
     --save_total_limit 5 \
-    --epochs 20 \
+    --num_train_epochs 20 \
     --learning_rate 3e-5 \
     --per_device_train_batch_size ${BATCH_SIZE} \
     --per_device_eval_batch_size ${BATCH_SIZE} \

@@ -2,12 +2,12 @@
 
 ## Available Danish Language Models
 
-| Model Name                                       | Layers    | Hidden Units | Attention Heads | Parameters |
-|--------------------------------------------------|-----------|--------------|-----------------|------------|
-| `Maltehb/danish-bert-botxo`                      | 12        | 768          | 12              | 110M       |
-| `Maltehb/aelaectra-danish-electra-small-uncased` | 12        | 256          | 4               | -          |
-| `coastalcph/danish-legal-lm-base`                | 12        | 768          | 12              | 110M       |
-| `xlm-roberta-base`                               | 12        | 768          | 12              | 135M       |
+| Model Name                                       | Layers / Units /  Heads | Vocab. | Parameters |
+|--------------------------------------------------|-------------------------|--------|------------|
+| `Maltehb/danish-bert-botxo`                      | 12 / 768 / 12           | 32K    | 110M       |
+| `Maltehb/aelaectra-danish-electra-small-uncased` | 12 / 256 / 4            | 32K    | 14M        |
+| `coastalcph/danish-legal-lm-base`                | 12 / 768 / 12           | 32K    | 110M       |
+| `xlm-roberta-base`                               | 12 / 768 / 12           | 256K   | 278M       |
 
 
 ## Danish Legal Data
