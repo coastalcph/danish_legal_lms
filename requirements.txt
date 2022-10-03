@@ -1,1 +1,7 @@
-tensorboard
+# torch>=1.11.0
+transformers>=4.15.0
+datasets>=2.0.0
+tokenizers>=0.12.0
+scikit-learn
+tqdm
+wandb
