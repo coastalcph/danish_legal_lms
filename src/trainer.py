@@ -305,6 +305,7 @@ class Trainer:
 
         if self.freeze_model_encoder:
             logger.info('Model\'s encoder will remain frozen in 20% initial steps!!!')
+            print('HEREEE::: Model\'s encoder will remain frozen in 20% initial steps!!!')
             for param in model.base_model.encoder.parameters():
                 param.requires_grad = False
             model.base_model.encoder.training = False
