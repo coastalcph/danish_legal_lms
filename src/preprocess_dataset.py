@@ -4,6 +4,7 @@ import tqdm
 from datasets import load_dataset, concatenate_datasets
 import os
 import argparse
+import re
 from data import DATA_DIR
 
 DATASET_NAME = 'danish_legal_pile'
@@ -43,12 +44,13 @@ def prepare_dataset():
         for split in ['train', 'test']:
             with open(os.path.join(CUSTOM_DATA_FOLDER, f'{split}_{size}.jsonl'), mode='w', encoding='utf8') as file:
                 for line in tqdm.tqdm(dataset[split]['text']):
-                    if len(line) > 32 and not line.isspace():
+                    line = re.sub(r'(\s)+', r'\1', line)
+                    if len(line.split(' ')) > 32 and not line.isspace():
                         ws_tokens = line.split(' ')
                         prev_idx = 0
                         for idx in range(max_sw_seq_length, len(ws_tokens) + max_sw_seq_length, max_sw_seq_length):
                             chunk = copy.deepcopy(' '.join(ws_tokens[prev_idx:idx]))
-                            if len(chunk) > 32 and not chunk.isspace():
+                            if len(chunk.split(' ')) > 32 and not chunk.isspace():
                                 file.write(json.dumps({'text': chunk}) + '\n')
                                 prev_idx = idx
 

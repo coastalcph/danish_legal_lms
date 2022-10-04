@@ -40,11 +40,11 @@ from transformers import (
     AutoTokenizer,
     DataCollatorForLanguageModeling,
     HfArgumentParser,
-    Trainer,
     TrainingArguments,
     is_torch_tpu_available,
     set_seed,
 )
+from trainer import Trainer
 from transformers.trainer_utils import get_last_checkpoint
 from transformers.utils import check_min_version
 from transformers.utils.versions import require_version
@@ -169,6 +169,12 @@ class DataTrainingArguments:
         metadata={
             "help": "For debugging purposes or quicker training, truncate the number of evaluation examples to this "
             "value if set."
+        },
+    )
+    freeze_model_encoder: Optional[bool] = field(
+        default=False,
+        metadata={
+            "help": "Whether to freeze or not the model's encoder. Used for modded models where the vocab is new."
         },
     )
 
@@ -441,6 +447,7 @@ def main():
         preprocess_logits_for_metrics=preprocess_logits_for_metrics
         if training_args.do_eval and not is_torch_tpu_available()
         else None,
+        freeze_model_encoder=data_args.freeze_model_encoder
     )
 
     # Training
