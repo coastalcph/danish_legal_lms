@@ -14,7 +14,7 @@ class FlotaTokenizer:
         self.tok = AutoTokenizer.from_pretrained(model_path, model_max_length=512)
         self.vocab = self.tok.vocab
         assert len(self.vocab) == self.tok.vocab_size
-        if self.model_path == 'bert-base-cased' or self.model_path == 'bert-base-uncased':
+        if 'bert-' in self.model_path:
             self.special = '##'
             self.max_len = 18
         elif self.model_path == 'roberta-base':
@@ -28,7 +28,7 @@ class FlotaTokenizer:
         texts = [self.encode(text) for text in texts]
         batch_size = len(texts)
         max_len = max(len(text) for text in texts)
-        if self.model_path == 'bert-base-cased' or self.model_path == 'bert-base-uncased':
+        if 'bert-' in self.model_path:
             input_ids = torch.zeros((batch_size, max_len)).long()
             attention_mask = torch.zeros((batch_size, max_len)).long()
             for i, text in enumerate(texts):
@@ -59,7 +59,7 @@ class FlotaTokenizer:
                 if w[i] == '-':
                     continue
                 subword = w[i:i + l]
-                if self.model_path == 'bert-base-cased' or self.model_path == 'bert-base-uncased':
+                if 'bert-' in self.model_path:
                     if i == 0:
                         if subword in self.vocab:
                             return subword, w[:i] + l * '-' + w[i + l:], i
@@ -95,7 +95,7 @@ class FlotaTokenizer:
         return flota_dict
 
     def tokenize(self, w):
-        if self.model_path == 'bert-base-cased' or self.model_path == 'bert-base-uncased':
+        if 'bert-' in self.model_path:
             if w in self.vocab:
                 return [w]
             elif self.special + w in self.vocab:
@@ -125,7 +125,7 @@ class FlotaTokenizer:
         tokens = list()
         for w in text_split:
             tokens.extend(self.tokenize(w))
-        if self.model_path == 'bert-base-cased' or self.model_path == 'bert-base-uncased':
+        if 'bert-' in self.model_path:
             ids_flota = self.tok.convert_tokens_to_ids(tokens)[:self.tok.model_max_length - 2]
             return [self.tok.cls_token_id] + ids_flota + [self.tok.sep_token_id]
         elif self.model_path == 'roberta-base':
