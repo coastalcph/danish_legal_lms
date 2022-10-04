@@ -11,7 +11,7 @@ python3 src/xla_spawn.py --num_cores=8 src/train_mlm.py \
     --model_name_or_path data/${MODEL_PATH} \
     --do_train \
     --do_eval \
-    --dataset_name danish_legal \
+    --dataset_name danish_legal_pile \
     --output_dir data/${MODEL_PATH}-mlm \
     --overwrite_output_dir \
     --logging_steps 1000 \

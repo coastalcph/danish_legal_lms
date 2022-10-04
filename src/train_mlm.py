@@ -225,15 +225,15 @@ def main():
 
     # Set seed before initializing model.
     set_seed(training_args.seed)
-
     raw_datasets = {'train': [], 'test': []}
-    CUSTOM_DATA_FOLDER = os.path.join(DATA_DIR, 'danish_legal_pile')
+    CUSTOM_DATA_FOLDER = os.path.join(DATA_DIR, data_args.dataset_name)
     raw_datasets['train'] = load_dataset('json',
                                          data_files=os.path.join(CUSTOM_DATA_FOLDER,
                                                                  f'train_{data_args.max_seq_length}.jsonl'))['train']
     raw_datasets['test'] = load_dataset('json',
                                         data_files=os.path.join(CUSTOM_DATA_FOLDER,
                                                                 f'test_{data_args.max_seq_length}.jsonl'))['train']
+
 
     # See more about loading any type of standard or custom dataset (from files, python dict, pandas DataFrame, etc) at
     # https://huggingface.co/docs/datasets/loading_datasets.html.

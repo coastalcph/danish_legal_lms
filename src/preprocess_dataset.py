@@ -1,37 +1,57 @@
+import copy
 import json
-
 import tqdm
 from datasets import load_dataset, concatenate_datasets
 import os
+import argparse
 from data import DATA_DIR
 
+DATASET_NAME = 'danish_legal_pile'
 
-CUSTOM_DATA_FOLDER = os.path.join(DATA_DIR, 'danish_legal_pile')
 
-if not os.path.exists(CUSTOM_DATA_FOLDER):
-    os.mkdir(CUSTOM_DATA_FOLDER)
+def prepare_dataset():
+    parser = argparse.ArgumentParser()
 
-# MERGE DANISH LEGAL AND EU CORPORA
-danish_dataset = load_dataset('DDSC/partial-danish-gigaword-no-twitter', split='train')
-danish_eurlex_dataset = load_dataset('multi_eurlex', 'da', split='train')
-danish_law_dataset = danish_dataset.filter(
-    lambda example: example['source'] in ['retsinformationdk', 'retspraksis'])
-danish_legal_dataset = concatenate_datasets([danish_law_dataset, danish_eurlex_dataset])
-danish_legal_dataset = danish_legal_dataset.shuffle(seed=42)
+    # Required arguments
+    parser.add_argument('--dataset_name', default='danish_legal_pile')
+    config = parser.parse_args()
 
-# SPLIT INTO TRAIN/TEST
-danish_legal_dataset = danish_legal_dataset.train_test_split(test_size=0.1, seed=42)
+    CUSTOM_DATA_FOLDER = os.path.join(DATA_DIR, config.dataset_name)
 
-# CREATE DERIVATIVES WITH SHORTER LENGTH
-for size in [128, 512]:
-    max_sw_seq_length = int(size * 0.9)
-    for split in ['train', 'test']:
-        with open(os.path.join(CUSTOM_DATA_FOLDER, f'{split}_{size}.jsonl'), mode='w', encoding='utf8') as file:
-            for line in tqdm.tqdm(danish_legal_dataset[split]['text']):
-                if len(line) > 0 and not line.isspace():
-                    ws_tokens = line.split(' ')
-                    prev_idx = 0
-                    for idx in range(max_sw_seq_length, len(ws_tokens) + max_sw_seq_length, max_sw_seq_length):
-                        file.write(json.dumps({'text': ' '.join(ws_tokens[prev_idx:idx])}) + '\n')
-                        prev_idx = idx
+    if not os.path.exists(CUSTOM_DATA_FOLDER):
+        os.mkdir(CUSTOM_DATA_FOLDER)
 
+    # MERGE DANISH LEGAL AND EU CORPORA
+    danish_dataset = load_dataset('DDSC/partial-danish-gigaword-no-twitter', split='train')
+    danish_eurlex_dataset = load_dataset('multi_eurlex', 'da', split='train')
+
+    if config.dataset_name == 'danish_legal_pile':
+        danish_law_dataset = danish_dataset.filter(
+            lambda example: example['source'] in ['retsinformationdk', 'retspraksis'])
+        dataset = concatenate_datasets([danish_law_dataset, danish_eurlex_dataset])
+        dataset = dataset.shuffle(seed=42)
+    else:
+        dataset = concatenate_datasets([danish_dataset, danish_eurlex_dataset])
+        dataset = dataset.shuffle(seed=42)
+
+    # SPLIT INTO TRAIN/TEST
+    dataset = dataset.train_test_split(test_size=0.1, seed=42)
+
+    # CREATE DERIVATIVES WITH SHORTER LENGTH
+    for size in [128, 512]:
+        max_sw_seq_length = int(size * 0.9)
+        for split in ['train', 'test']:
+            with open(os.path.join(CUSTOM_DATA_FOLDER, f'{split}_{size}.jsonl'), mode='w', encoding='utf8') as file:
+                for line in tqdm.tqdm(dataset[split]['text']):
+                    if len(line) > 32 and not line.isspace():
+                        ws_tokens = line.split(' ')
+                        prev_idx = 0
+                        for idx in range(max_sw_seq_length, len(ws_tokens) + max_sw_seq_length, max_sw_seq_length):
+                            chunk = copy.deepcopy(' '.join(ws_tokens[prev_idx:idx]))
+                            if len(chunk) > 32 and not chunk.isspace():
+                                file.write(json.dumps({'text': chunk}) + '\n')
+                                prev_idx = idx
+
+
+if __name__ == '__main__':
+    prepare_dataset()

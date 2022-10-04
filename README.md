@@ -7,6 +7,8 @@
 | `Maltehb/danish-bert-botxo`                      | 12 / 768 / 12           | 32K    | 110M       |
 | `Maltehb/aelaectra-danish-electra-small-uncased` | 12 / 256 / 4            | 32K    | 14M        |
 | `coastalcph/danish-legal-lm-base`                | 12 / 768 / 12           | 32K    | 110M       |
+| `coastalcph/danish-legal-bert-base`              | 12 / 768 / 12           | 32K    | 110M       |
+| `coastalcph/danish-legal-xlm-base`               | 12 / 768 / 12           | 32K    | 110M       |
 | `xlm-roberta-base`                               | 12 / 768 / 12           | 256K   | 278M       |
 
 
@@ -16,10 +18,12 @@ This model is pre-trained on a combination of the Danish part of the MultiEURLEX
 
 ## Evaluation
 
-| Model Name                        | EURLEX | 
-|-----------------------------------|--------|
-| `Maltehb/danish-bert-botxo`       | -      | 
-| `coastalcph/danish-legal-lm-base` | -      | 
+| Model Name                          | EURLEX Val. | EURLEX Test | 
+|-------------------------------------|-------------|-------------|
+| `Maltehb/danish-bert-botxo`         | 73.7 / 42.8 | 67.6 / 38.2 | 
+| `coastalcph/danish-legal-lm-base`   | 75.1 / 46.5 | 69.1 / 41.9 | 
+| `coastalcph/danish-legal-bert-base` | TBA         | TBA         | 
+| `coastalcph/danish-legal-xlm-base`  | TBA         | TBA         | 
 
 
 
