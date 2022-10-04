@@ -2,7 +2,7 @@ import os
 import torch
 from torch.nn import Parameter
 from transformers import AutoTokenizer, AutoModelForMaskedLM, AutoConfig
-from data import DATA_DIR
+from data import DATA_DIR, AUTH_KEY
 from flota_tokenizer import FlotaTokenizer
 import numpy as np
 import unidecode
@@ -16,11 +16,11 @@ def warm_start_model():
     # Required arguments
     parser.add_argument('--teacher_model_name', default='xlm-roberta-base')
     parser.add_argument('--teacher_start', default='▁')
-    parser.add_argument('--student_model_name', default='../data/plms/danish-legal-xlm-base')
+    parser.add_argument('--student_model_name', default='coastalcph/danish-legal-lm-base')
     parser.add_argument('--student_start', default='Ġ')
     parser.add_argument('--use_flota', default=True)
     parser.add_argument('--flota_mode', default='longest', choices=['flota', 'longest', 'first'])
-    parser.add_argument('--auth_token', default=None)
+    parser.add_argument('--auth_token', default=AUTH_KEY)
     config = parser.parse_args()
 
     # load tokenizers
@@ -154,7 +154,8 @@ def warm_start_model():
               f'with an average of {avg_standard_chunks - avg_flota_chunks:.1f} sub-words.')
 
     # load dummy student model
-    student_model_config = AutoConfig.from_pretrained(config.student_model_name)
+    student_model_config = AutoConfig.from_pretrained(config.student_model_name,
+                                                      use_auth_token=config.auth_token)
     roberta_model = AutoModelForMaskedLM.from_config(student_model_config)
 
     # load teacher model
