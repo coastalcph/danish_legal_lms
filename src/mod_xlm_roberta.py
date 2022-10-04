@@ -68,34 +68,34 @@ def warm_start_model():
         # perfect match (e.g., "document" --> "document")
         if token in teacher_vocab:
             student_teacher_mapping_ids[token_id] = teacher_vocab[token]
-            student_teacher_mapping_tokens[token] = token
+            student_teacher_mapping_tokens[original_token] = token
             identical_tokens += 1
         # perfect match with cased version of token (e.g., "paris" --> "Paris")
         elif token.lower() in teacher_vocab_lowercased:
             student_teacher_mapping_ids[token_id] = teacher_vocab_lowercased[token.lower()]
-            student_teacher_mapping_tokens[token] = teacher_vocab_ids[teacher_vocab_lowercased[token.lower()]]
+            student_teacher_mapping_tokens[original_token] = teacher_vocab_ids[teacher_vocab_lowercased[token.lower()]]
             semi_identical_tokens += 1
         # match with non-starting token (e.g., "concat" --> "_concat")
         elif token.replace(TEACHER_START, '') in teacher_vocab:
             student_teacher_mapping_ids[token_id] = teacher_vocab[token.replace(TEACHER_START, '')]
-            student_teacher_mapping_tokens[token] = token.replace(TEACHER_START, '')
+            student_teacher_mapping_tokens[original_token] = token.replace(TEACHER_START, '')
             semi_identical_tokens += 1
         # match with cased version of non-starting token (e.g., "ema" --> "_EMA")
         elif token.lower().replace(TEACHER_START, '') in teacher_vocab_lowercased:
             student_teacher_mapping_ids[token_id] = teacher_vocab_lowercased[token.lower().replace(TEACHER_START, '')]
-            student_teacher_mapping_tokens[token] = teacher_vocab_ids[teacher_vocab_lowercased[token.lower().replace(TEACHER_START, '')]]
+            student_teacher_mapping_tokens[original_token] = teacher_vocab_ids[teacher_vocab_lowercased[token.lower().replace(TEACHER_START, '')]]
             semi_identical_normalized_tokens += 1
         # normalized version of token in vocab -> map to the normalized version of token
         # (e.g., 'garçon' --> 'garcon')
         elif unidecode.unidecode(token) in teacher_vocab:
             student_teacher_mapping_ids[token_id] = teacher_vocab[unidecode.unidecode(token)]
-            student_teacher_mapping_tokens[token] = unidecode.unidecode(unidecode.unidecode(token))
+            student_teacher_mapping_tokens[original_token] = unidecode.unidecode(unidecode.unidecode(token))
             semi_identical_normalized_tokens += 1
         # normalized version of uncased token in vocab -> map to the normalized version of token
         # (e.g., 'Garçon' --> 'garçon' --> 'garcon')
         elif unidecode.unidecode(token).lower() in teacher_vocab_lowercased:
             student_teacher_mapping_ids[token_id] = teacher_vocab_lowercased[unidecode.unidecode(token).lower()]
-            student_teacher_mapping_tokens[token] = unidecode.unidecode(unidecode.unidecode(token).lower())
+            student_teacher_mapping_tokens[original_token] = unidecode.unidecode(unidecode.unidecode(token).lower())
             semi_identical_normalized_tokens += 1
         else:
             # tokenize token (e.g., "unprecedented" --> ['_un', 'prec', 'edent', 'ed'])
@@ -114,7 +114,7 @@ def warm_start_model():
             # sub-word token -> map to the sub-word (e.g., "_μ" --> ["μ"] --> "μ")
             if len(sub_words) == 1 and sub_words[0] != teacher_tokenizer.unk_token_id:
                 student_teacher_mapping_ids[token_id] = sub_words[0]
-                student_teacher_mapping_tokens[token] = sub_words_tokens[0]
+                student_teacher_mapping_tokens[original_token] = sub_words_tokens[0]
                 if sub_words_tokens[0].replace(STUDENT_START, '').replace(TEACHER_START, '') == \
                         original_token.replace(STUDENT_START, '').replace(TEACHER_START, ''):
                     semi_identical_tokens += 1
@@ -123,18 +123,21 @@ def warm_start_model():
             # list of sub-words w/o <unk> -> map to the list (e.g., 'overqualified' --> ['over', '_qualified'] )
             elif len(sub_words) >= 2 and teacher_tokenizer.unk_token_id not in sub_words:
                 student_teacher_mapping_ids[token_id] = sub_words
-                student_teacher_mapping_tokens[token] = sub_words_tokens
+                student_teacher_mapping_tokens[original_token] = sub_words_tokens
                 student_teacher_mapping_compound_tokens[token] = sub_words_tokens
                 compound_tokens += 1
             else:
                 # list of sub-words w/ <unk> -> map to the list (e.g., 'Ω-power' --> [<unk>, '-power'] --> '-power')
                 if len(sub_words) > 1 and set(sub_words) != {teacher_tokenizer.unk_token_id}:
-                    student_teacher_mapping_compound_tokens[token] = sub_words.remove(teacher_tokenizer.unk_token_id)
+                    student_teacher_mapping_ids[token_id] = sub_words.remove(teacher_tokenizer.unk_token_id)
+                    student_teacher_mapping_tokens[original_token] = sub_words_tokens.remove(teacher_tokenizer.unk_token_id)
+                    student_teacher_mapping_compound_tokens[token] = sub_words_tokens
                     compound_tokens += 1
                 # <unk> -> map to <unk>
                 else:
                     # No hope use <unk> (e.g., '晚上好' --> <unk>)
-                    student_teacher_mapping_tokens[token] = '<unk>'
+                    student_teacher_mapping_ids[token_id] = teacher_tokenizer.unk_token_id
+                    student_teacher_mapping_tokens[original_token] = teacher_tokenizer.unk_token_id
                     print(f'Token "{token}" not in vocabulary, replaced with UNK.')
                     unk_tokens += 1
 
@@ -174,7 +177,7 @@ def warm_start_model():
     word_embeddings = [word_embeddings_matrix[teacher_id] if isinstance(teacher_id, int)
                        else word_embeddings_matrix[teacher_id].mean(dim=0)
                        for student_id, teacher_id in student_teacher_mapping_ids.items()]
-    word_embeddings = torch.concat(word_embeddings, dim=0)
+    word_embeddings = torch.stack(word_embeddings)
 
     # replace student's word embeddings matrix
     roberta_model.roberta.embeddings.word_embeddings.weight = Parameter(word_embeddings)
