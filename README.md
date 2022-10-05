@@ -1,29 +1,37 @@
 # Danish Legal Language Models
 
-## Available Danish Language Models
+## Available Language Models for Danish
 
-| Model Name                                       | Layers / Units /  Heads | Vocab. | Parameters |
-|--------------------------------------------------|-------------------------|--------|------------|
-| `Maltehb/danish-bert-botxo`                      | 12 / 768 / 12           | 32K    | 110M       |
-| `Maltehb/aelaectra-danish-electra-small-uncased` | 12 / 256 / 4            | 32K    | 14M        |
-| `coastalcph/danish-legal-lm-base`                | 12 / 768 / 12           | 32K    | 110M       |
-| `coastalcph/danish-legal-bert-base`              | 12 / 768 / 12           | 32K    | 110M       |
-| `coastalcph/danish-legal-xlm-base`               | 12 / 768 / 12           | 32K    | 110M       |
-| `xlm-roberta-base`                               | 12 / 768 / 12           | 256K   | 278M       |
-
-
-## Danish Legal Data
-This model is pre-trained on a combination of the Danish part of the MultiEURLEX (Chalkidis et al., 2021) dataset comprising EU legislation and two subsets (`retsinformationdk`, `retspraksis`) of the Danish Gigaword Corpus (Derczynski et al., 2021) comprising legal proceedings. It achieves the following results on the evaluation set.
+| Model Name                                                                                                  | Layers / Units /  Heads | Vocab. | Parameters | Legal              |
+|-------------------------------------------------------------------------------------------------------------|-------------------------|--------|------------|--------------------|
+| [`Maltehb/danish-bert-botxo`](https://huggingface.co/Maltehb/danish-bert-botxo)                             | 12 / 768 / 12           | 32K    | 110M       | :x:                |
+| [`coastalcph/danish-legal-lm-base`](https://huggingface.co/coastalcph/danish-legal-lm-base)                 | 12 / 768 / 12           | 32K    | 110M       | :white_check_mark: |
+| [`coastalcph/danish-legal-bert-base`](https://huggingface.co/coastalcph/danish-legal-bert-base)             | 12 / 768 / 12           | 32K    | 110M       | :white_check_mark: |
+| [`coastalcph/danish-legal-longformer-base`](https://huggingface.co/coastalcph/danish-legal-longformer-base) | 12 / 768 / 12           | 32K    | 134M       | :white_check_mark: |
+| [`coastalcph/danish-legal-xlm-base`](https://huggingface.co/coastalcph/danish-legal-xlm-base)               | 12 / 768 / 12           | 32K    | 110M       | :white_check_mark: |
+| [`xlm-roberta-base`](https://huggingface.co/xlm-roberta-base)                                               | 12 / 768 / 12           | 256K   | 278M       | :x:                |
 
 
-## Evaluation
+## Danish Legal Pile
+This model is pre-trained on a combination of the Danish part of the [MultiEURLEX](https://huggingface.co/datasets/multi_eurlex) (Chalkidis et al., 2021) dataset comprising 65k EU laws and two subsets (`retsinformationdk`, `retspraksis`) of the [Danish Gigaword Corpus](https://huggingface.co/datasets/DDSC/partial-danish-gigaword-no-twitter) (Derczynski et al., 2021) comprising legal proceedings. It achieves the following results on the evaluation set.
 
-| Model Name                          | EURLEX Val. | EURLEX Test | 
-|-------------------------------------|-------------|-------------|
-| `Maltehb/danish-bert-botxo`         | 73.7 / 42.8 | 67.6 / 38.2 | 
-| `coastalcph/danish-legal-lm-base`   | 75.1 / 46.5 | 69.1 / 41.9 | 
-| `coastalcph/danish-legal-bert-base` | TBA         | TBA         | 
-| `coastalcph/danish-legal-xlm-base`  | TBA         | TBA         | 
+| Model Name                          | Loss | Accuracy   | 
+|-------------------------------------|------|------------|
+| `Maltehb/danish-bert-botxo`         | TBA  | TBA        | 
+| `coastalcph/danish-legal-lm-base`   | TBA  | TBA        | 
+| `coastalcph/danish-legal-bert-base` | TBA  | TBA        | 
+| `coastalcph/danish-legal-xlm-base`  | TBA  | TBA        | 
+
+
+## Benchmarking
+
+| Model Name                                | EURLEX Val. | EURLEX Test | 
+|-------------------------------------------|-------------|-------------|
+| `Maltehb/danish-bert-botxo`               | 73.7 / 42.8 | 67.6 / 38.2 | 
+| `coastalcph/danish-legal-lm-base`         | 75.1 / 46.5 | 69.1 / 41.9 | 
+| `coastalcph/danish-legal-bert-base`       | TBA         | TBA         | 
+| `coastalcph/danish-legal-xlm-base`        | TBA         | TBA         | 
+| `coastalcph/danish-legal-longformer-base` | TBA         | TBA         | 
 
 
 

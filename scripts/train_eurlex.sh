@@ -7,7 +7,7 @@ MODEL_PATH='coastalcph/danish-legal-lm-base'
 CONCEPT_LEVEL='level_2'
 BATCH_SIZE=32
 
-python src/train_eurlex.py \
+python src/finetuning/train_eurlex.py \
     --model_name_or_path ${MODEL_PATH} \
     --do_train \
     --do_eval \

@@ -7,7 +7,7 @@ MODEL_PATH='plms/danish-legal-lm-base'
 BATCH_SIZE=16
 ACCUMULATION_STEPS=2
 
-python3 src/xla_spawn.py --num_cores=8 src/train_mlm.py \
+python3 src/xla_spawn.py --num_cores=8 src/pretraining/train_mlm.py \
     --model_name_or_path data/${MODEL_PATH} \
     --do_train \
     --do_eval \
@@ -32,4 +32,5 @@ python3 src/xla_spawn.py --num_cores=8 src/train_mlm.py \
     --mlm_probability 0.15 \
     --max_seq_length ${MODEL_MAX_LENGTH} \
     --pad_to_max_length \
+    --line_by_line \
     --max_eval_samples 10000
