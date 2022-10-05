@@ -5,11 +5,11 @@
 | Model Name                                                                                                  | Layers / Units /  Heads | Vocab. | Parameters | Legal              |
 |-------------------------------------------------------------------------------------------------------------|-------------------------|--------|------------|--------------------|
 | [`Maltehb/danish-bert-botxo`](https://huggingface.co/Maltehb/danish-bert-botxo)                             | 12 / 768 / 12           | 32K    | 110M       | :x:                |
+| [`xlm-roberta-base`](https://huggingface.co/xlm-roberta-base)                                               | 12 / 768 / 12           | 256K   | 278M       | :x:                |
 | [`coastalcph/danish-legal-lm-base`](https://huggingface.co/coastalcph/danish-legal-lm-base)                 | 12 / 768 / 12           | 32K    | 110M       | :white_check_mark: |
 | [`coastalcph/danish-legal-bert-base`](https://huggingface.co/coastalcph/danish-legal-bert-base)             | 12 / 768 / 12           | 32K    | 110M       | :white_check_mark: |
 | [`coastalcph/danish-legal-longformer-base`](https://huggingface.co/coastalcph/danish-legal-longformer-base) | 12 / 768 / 12           | 32K    | 134M       | :white_check_mark: |
 | [`coastalcph/danish-legal-xlm-base`](https://huggingface.co/coastalcph/danish-legal-xlm-base)               | 12 / 768 / 12           | 32K    | 110M       | :white_check_mark: |
-| [`xlm-roberta-base`](https://huggingface.co/xlm-roberta-base)                                               | 12 / 768 / 12           | 256K   | 278M       | :x:                |
 
 
 ## Danish Legal Pile
