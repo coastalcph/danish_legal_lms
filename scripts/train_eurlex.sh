@@ -1,11 +1,11 @@
 export WANDB_PROJECT="danish-lm"
 export PYTHONPATH=.
-export CUDA_VISIBLE_DEVICES=7
+export CUDA_VISIBLE_DEVICES=0,1
 
-MODEL_MAX_LENGTH=512
-MODEL_PATH='coastalcph/danish-legal-lm-base'
+MODEL_MAX_LENGTH=1024
+MODEL_PATH='coastalcph/danish-legal-longformer-base'
 CONCEPT_LEVEL='level_2'
-BATCH_SIZE=32
+BATCH_SIZE=16
 
 python src/finetuning/train_eurlex.py \
     --model_name_or_path ${MODEL_PATH} \
@@ -30,3 +30,4 @@ python src/finetuning/train_eurlex.py \
     --load_best_model_at_end \
     --metric_for_best_model micro-f1 \
     --greater_is_better True
+
