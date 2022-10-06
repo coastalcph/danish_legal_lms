@@ -2,7 +2,7 @@ export WANDB_PROJECT="danish-lex-lm"
 export PYTHONPATH=.
 
 MODEL_MAX_LENGTH=512
-MODEL_PATH='plms/danish-legal-lm-base'
+MODEL_PATH='coastalcph/danish-legal-lm-base'
 BATCH_SIZE=32
 
 python src/pretraining/eval_mlm.py \
