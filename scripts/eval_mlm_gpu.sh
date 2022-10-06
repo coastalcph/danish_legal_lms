@@ -5,7 +5,7 @@ MODEL_MAX_LENGTH=512
 MODEL_PATH='plms/danish-legal-lm-base'
 BATCH_SIZE=32
 
-python src/pretraining/train_mlm.py \
+python src/pretraining/eval_mlm.py \
     --model_name_or_path data/${MODEL_PATH} \
     --do_eval \
     --dataset_name danish_legal_pile \
