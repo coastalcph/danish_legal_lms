@@ -6,7 +6,7 @@ MODEL_PATH='coastalcph/danish-legal-lm-base'
 BATCH_SIZE=32
 
 python src/pretraining/eval_mlm.py \
-    --model_name_or_path data/${MODEL_PATH} \
+    --model_name_or_path ${MODEL_PATH} \
     --do_eval \
     --dataset_name danish_legal_pile \
     --output_dir data/${MODEL_PATH}-eval \
