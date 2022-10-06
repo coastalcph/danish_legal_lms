@@ -1,5 +1,4 @@
 export WANDB_PROJECT="danish-lex-lm"
-export XRT_TPU_CONFIG="localservice;0;localhost:51011"
 export PYTHONPATH=.
 
 MODEL_MAX_LENGTH=512
@@ -7,7 +6,7 @@ MODEL_PATH='plms/danish-legal-lm-base'
 BATCH_SIZE=16
 ACCUMULATION_STEPS=2
 
-python3 src/xla_spawn.py --num_cores=8 src/pretraining/train_mlm.py \
+python src/pretraining/train_mlm.py \
     --model_name_or_path data/${MODEL_PATH} \
     --do_train \
     --do_eval \
@@ -33,4 +32,7 @@ python3 src/xla_spawn.py --num_cores=8 src/pretraining/train_mlm.py \
     --max_seq_length ${MODEL_MAX_LENGTH} \
     --pad_to_max_length \
     --line_by_line \
-    --max_eval_samples 10000
+    --max_eval_samples 10000 \
+    --fp16 \
+    --fp16_full_eval
+

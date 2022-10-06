@@ -29,9 +29,30 @@ This model is pre-trained on a combination of the Danish part of the [MultiEURLE
 |-------------------------------------------|-------------|-------------|
 | `Maltehb/danish-bert-botxo`               | 73.7 / 42.8 | 67.6 / 38.2 | 
 | `coastalcph/danish-legal-lm-base`         | 75.1 / 46.5 | 69.1 / 41.9 | 
-| `coastalcph/danish-legal-bert-base`       | TBA         | TBA         | 
+| `coastalcph/danish-legal-bert-base`       | 75.0 / 50.4 | 68.9 / 44.3 | 
 | `coastalcph/danish-legal-xlm-base`        | TBA         | TBA         | 
 | `coastalcph/danish-legal-longformer-base` | TBA         | TBA         | 
 
 
 
+## Code Base
+
+### Train new RoBERTa LM
+
+```shell
+sh train_mlm_gpu.sh
+```
+
+### Modify pre-trained XLM-R
+
+```bash
+export PYTHONPATH=.
+python src/mod_teacher_model.py --teacher_model_path coastalcph/danish-legal-lm-base --student_model_path coastalcph/danish-legal-lm-base
+```
+
+### Longformerize pre-trained RoBERTa LM
+
+```bash
+export PYTHONPATH=.
+python src/longformerize_model.py --roberta_model_path coastalcph/danish-legal-lm-base --max_length 2048 --attention_window 128
+```

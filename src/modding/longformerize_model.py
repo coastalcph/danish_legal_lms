@@ -14,9 +14,9 @@ def convert_roberta_to_htf():
     # Required arguments
     parser.add_argument('--roberta_model_path', default='coastalcph/danish-legal-lm-base')
     parser.add_argument('--longformer_model_path', default=os.path.join(DATA_DIR, 'plms/danish-legal-longformer-base'))
-    parser.add_argument('--max_length', default=2048)
-    parser.add_argument('--window_size', default=256)
-    parser.add_argument('--auth_token', default=AUTH_KEY)
+    parser.add_argument('--max_length', default=2048, type=int)
+    parser.add_argument('--window_size', default=256, type=int)
+    parser.add_argument('--auth_token', default=AUTH_KEY, type=str)
     config = parser.parse_args()
 
     # load pre-trained bert model and tokenizer

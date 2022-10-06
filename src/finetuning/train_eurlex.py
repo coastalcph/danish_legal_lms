@@ -33,6 +33,7 @@ from transformers.utils import check_min_version
 from transformers.utils.versions import require_version
 from data import DATA_DIR, AUTH_KEY
 from src.finetuning.data_collator import DataCollatorForMultiLabelClassification
+from src.finetuning.modeling_longformer import LongformerForSequenceClassification
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.9.0")
@@ -224,7 +225,7 @@ def main():
         model_args.config_name if model_args.config_name else model_args.model_name_or_path,
         num_labels=num_labels,
         id2label={str(idx): eurovoc_descriptors[label_name]['en'] for idx, label_name in enumerate(labels_names)},
-        label2id={eurovoc_descriptors[label_name]['en']: str for idx, label_name in enumerate(labels_names)},
+        label2id={eurovoc_descriptors[label_name]['en']: idx for idx, label_name in enumerate(labels_names)},
         finetuning_task=f"eurlex-{num_labels}-concepts",
         cache_dir=model_args.cache_dir,
         revision=model_args.model_revision,
@@ -240,14 +241,24 @@ def main():
         use_auth_token=AUTH_KEY if model_args.use_auth_token else None,
     )
 
-    model = AutoModelForSequenceClassification.from_pretrained(
-        model_args.model_name_or_path,
-        from_tf=bool(".ckpt" in model_args.model_name_or_path),
-        config=config,
-        cache_dir=model_args.cache_dir,
-        revision=model_args.model_revision,
-        use_auth_token=AUTH_KEY if model_args.use_auth_token else None,
-    )
+    if config.model_type == 'Longformer':
+        model = LongformerForSequenceClassification.from_pretrained(
+            model_args.model_name_or_path,
+            from_tf=bool(".ckpt" in model_args.model_name_or_path),
+            config=config,
+            cache_dir=model_args.cache_dir,
+            revision=model_args.model_revision,
+            use_auth_token=AUTH_KEY if model_args.use_auth_token else None,
+        )
+    else:
+        model = AutoModelForSequenceClassification.from_pretrained(
+            model_args.model_name_or_path,
+            from_tf=bool(".ckpt" in model_args.model_name_or_path),
+            config=config,
+            cache_dir=model_args.cache_dir,
+            revision=model_args.model_revision,
+            use_auth_token=AUTH_KEY if model_args.use_auth_token else None,
+        )
 
     # Preprocessing the datasets
     # Padding strategy

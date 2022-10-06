@@ -17,9 +17,9 @@ def warm_start_model():
     parser = argparse.ArgumentParser()
 
     # Required arguments
-    parser.add_argument('--teacher_model_name', default='xlm-roberta-base')
+    parser.add_argument('--teacher_model_path', default='xlm-roberta-base')
     parser.add_argument('--teacher_start', default='▁')
-    parser.add_argument('--student_model_name', default='coastalcph/danish-legal-lm-base')
+    parser.add_argument('--student_model_path', default='coastalcph/danish-legal-lm-base')
     parser.add_argument('--student_start', default='Ġ')
     parser.add_argument('--use_flota', default=True)
     parser.add_argument('--flota_mode', default='longest', choices=['flota', 'longest', 'first'])
@@ -28,13 +28,13 @@ def warm_start_model():
     config = parser.parse_args()
 
     # load tokenizers
-    teacher_tokenizer = AutoTokenizer.from_pretrained(config.teacher_model_name,
+    teacher_tokenizer = AutoTokenizer.from_pretrained(config.teacher_model_path,
                                                       use_auth_token=config.auth_token)
-    student_tokenizer = AutoTokenizer.from_pretrained(config.student_model_name,
+    student_tokenizer = AutoTokenizer.from_pretrained(config.student_model_path,
                                                       use_auth_token=config.auth_token)
     if config.use_flota:
         # use FLOTA tokenizer of Hofmann et al. (2022) to decrease over-fragmentation
-        teacher_flota_tokenizer = FlotaTokenizer(config.teacher_model_name,
+        teacher_flota_tokenizer = FlotaTokenizer(config.teacher_model_path,
                                                  mode=config.flota_mode,
                                                  k=1 if config.flota_mode in ['longest', 'first'] else 4)
 
@@ -50,7 +50,7 @@ def warm_start_model():
     teacher_vocab_lowercased = {token.lower(): token_id for (token, token_id) in teacher_vocab.items()}
     teacher_vocab_ids = {token_id: token for token, token_id in teacher_vocab.items()}
     TEACHER_START = config.teacher_start
-    TEACHER_SPECIAL_TOKENS = SPECIAL_TOKENS_MAPPING_BERT if 'bert-' in config.teacher_model_name \
+    TEACHER_SPECIAL_TOKENS = SPECIAL_TOKENS_MAPPING_BERT if 'bert-' in config.teacher_model_path \
         else SPECIAL_TOKENS_MAPPING_ROBERTA
 
     # Build student vocab dict
@@ -58,7 +58,7 @@ def warm_start_model():
     student_vocab.sort()
     student_vocab = {token: token_id for (token_id, token) in student_vocab}
     STUDENT_START =config.student_start
-    STUDENT_SPECIAL_TOKENS = SPECIAL_TOKENS_MAPPING_BERT if 'bert-' in config.student_model_name \
+    STUDENT_SPECIAL_TOKENS = SPECIAL_TOKENS_MAPPING_BERT if 'bert-' in config.student_model_path \
         else SPECIAL_TOKENS_MAPPING_ROBERTA
 
     # statistics counter
@@ -77,7 +77,7 @@ def warm_start_model():
             student_teacher_mapping_ids[token_id] = teacher_vocab[token]
             student_teacher_mapping_tokens[original_token] = token
             continue
-        if 'bert-' in config.teacher_model_name and re.match('[a-z]{2,}', original_token):
+        if 'bert-' in config.teacher_model_path and re.match('[a-z]{2,}', original_token):
             token = '##' + copy.deepcopy(original_token)
         else:
             token = copy.deepcopy(original_token)
@@ -116,7 +116,7 @@ def warm_start_model():
             semi_identical_normalized_tokens += 1
         else:
             # tokenize token (e.g., "unprecedented" --> ['_un', 'prec', 'edent', 'ed'])
-            if 'bert-' in config.teacher_model_name:
+            if 'bert-' in config.teacher_model_path:
                 token = token.replace(STUDENT_START, ' ').replace('##', '')
             else:
                 token = token.replace(STUDENT_START, ' ').replace(TEACHER_START, ' ')
@@ -187,12 +187,12 @@ def warm_start_model():
               f'with an average of {avg_standard_chunks - avg_flota_chunks:.1f} sub-words.')
 
     # load dummy student model
-    student_model_config = AutoConfig.from_pretrained(config.student_model_name,
+    student_model_config = AutoConfig.from_pretrained(config.student_model_path,
                                                       use_auth_token=config.auth_token)
     student_model = AutoModelForMaskedLM.from_config(student_model_config)
 
     # load teacher model
-    teacher_model = AutoModelForMaskedLM.from_pretrained(config.teacher_model_name)
+    teacher_model = AutoModelForMaskedLM.from_pretrained(config.teacher_model_path)
 
     for param in student_model.base_model.parameters():
         param.requires_grad = False
