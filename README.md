@@ -26,16 +26,17 @@ This model is pre-trained on a combination of the Danish part of the [MultiEURLE
 
 ## Benchmarking
 
-| Model Name                                | EURLEX Val. | EURLEX Test | 
-|-------------------------------------------|-------------|-------------|
-| `Maltehb/danish-bert-botxo`               | 73.7 / 42.8 | 67.6 / 38.2 | 
-| `coastalcph/danish-legal-lm-base`         | 75.1 / 46.5 | 69.1 / 41.9 | 
-| `coastalcph/danish-legal-bert-base`       | 75.0 / 50.4 | 68.9 / 44.3 | 
-| `coastalcph/danish-legal-xlm-base`        | TBA         | TBA         | 
-| `coastalcph/danish-legal-longformer-base` | 75.7 / 52.9 | 69.6 / 47.0 | 
+| Model Name                                                                         | EURLEX Val. | EURLEX Test | 
+|------------------------------------------------------------------------------------|-------------|-------------|
+| `Maltehb/danish-bert-botxo`                                                        | 73.7 / 42.8 | 67.6 / 38.2 | 
+| `coastalcph/danish-legal-lm-base`                                                  | 75.1 / 46.5 | 69.1 / 41.9 | 
+| `coastalcph/danish-legal-bert-base`                                                | 75.0 / 50.4 | 68.9 / 44.3 | 
+| `coastalcph/danish-legal-xlm-base`                                                 | TBA         | TBA         | 
+| `coastalcph/danish-legal-longformer-base`                                          | 75.7 / 52.9 | 69.6 / 47.0 | 
+| `coastalcph/danish-legal-longformer-base` + SD Penalty ([Pezeshki et al., 2020](https://arxiv.org/abs/2011.09468)) | 76.1 / 52.9 | 69.9 / 47.0 | 
 
 
-The best model `coastalcph/danish-legal-longformer-base` is available on HuggingFace Hub (https://huggingface.co/coastalcph/danish-legal-longformer-eurlex) with instructions on how can be used as text classifier or efature extractor.
+The top-2 best models  ([`coastalcph/danish-legal-longformer-base`](https://huggingface.co/coastalcph/danish-legal-longformer-eurlex), [`coastalcph/danish-legal-longformer-base-sd`](https://huggingface.co/coastalcph/danish-legal-longformer-eurlex-sd))  are available on HuggingFace Hub with instructions on how can be used as text classifier or feature extractor.
 
 ## Code Base
 
